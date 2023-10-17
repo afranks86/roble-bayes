@@ -32,14 +32,30 @@ RUN echo "echo \"Jupyter server token: \$(jupyter server list 2>&1 | grep -oP '(
 RUN pip install jupyterlab-quarto
 
 ## Install cmdstanr and INLA-R
-RUN R -q -e 'install.packages("cmdstanr", repos = c("https://mc-stan.org/r-packages/", getOption("repos")))' &&\
+RUN R -q -e 'install.packages("cmdstanr", repos = c("https://mc-stan.org/r-packages/", "https://cloud.r-project.org"))' && \
     R -q -e 'cmdstanr::install_cmdstan()' &&\
-    R -q -e 'install.packages("bayesplot")' &&\
-    R -q -e 'install.packages("INLA",repos=c(getOption("repos"),INLA="https://inla.r-inla-download.org/R/stable"), dep=TRUE)'
+    R -q -e 'install.packages(c("bayesplot", "shinystan"), repos = "http://cloud.r-project.org")'    
 
+## INSTALL INLA
+
+## INSTALL JAX and NUMPYRO
+USER ${NB_USER}
+
+RUN pip install pip install -U "jax[cuda12_pip]" -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
+RUN pip install numpyro[cuda] -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
 
 USER root
+
+##    RUN apt-get update && \
+##        apt-get -y install libudunits2-dev
+
+##    USER ${NB_USER}
+
+##    RUN R -q -e 'install.packages("fmesher", repos=c("https://inlabru-org.r-universe.dev", "https://inla.r-inla-download.org/R/testing","https://cran.rstudio.com"))'  &&\
+##        R -q -e 'install.packages("INLA", repos=c(repos=c("https://inla.r-inla-download.org/R/stable"))'
+
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends tree && \
     rm -rf /var/lib/apt/lists/*
+
