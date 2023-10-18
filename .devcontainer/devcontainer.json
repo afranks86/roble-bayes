@@ -29,7 +29,9 @@
 				"ms-toolsai.jupyter-keymap",
 				"reditorsupport.r",
 				"RDebugger.r-debugger",
-				"analytic-signal.preview-pdf"
+				"analytic-signal.preview-pdf",
+				"ms-vscode.live-server",
+				"github.copilot"
 			]
 		}
 	},
