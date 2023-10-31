@@ -49,11 +49,12 @@ USER root
 
 ##    RUN apt-get update && \
 ##        apt-get -y install libudunits2-dev
+RUN conda install -c conda-forge -y udunits2 gdal r-sf r-terra r-inlabru 
 
-##    USER ${NB_USER}
+## USER ${NB_USER}
 
-##    RUN R -q -e 'install.packages("fmesher", repos=c("https://inlabru-org.r-universe.dev", "https://inla.r-inla-download.org/R/testing","https://cran.rstudio.com"))'  &&\
-##        R -q -e 'install.packages("INLA", repos=c(repos=c("https://inla.r-inla-download.org/R/stable"))'
+RUN R -q -e 'install.packages("fmesher", repos="cloud.r-project.org")' &&\
+    R -q -e 'install.packages("INLA", repos=c("https://inla.r-inla-download.org/R/stable"))'
 
 
 RUN R -q -e 'install.packages(c("doParallel", "kableExtra", "ggrepel"), repos = c("https://mc-stan.org/r-packages/", "https://cloud.r-project.org"))'
