@@ -59,6 +59,8 @@ RUN R -q -e 'install.packages("fmesher", repos="cloud.r-project.org")' &&\
 
 RUN R -q -e 'install.packages(c("doParallel", "kableExtra", "ggrepel"), repos = c("https://mc-stan.org/r-packages/", "https://cloud.r-project.org"))'
 
+RUN R -q -e 'install.packages(c("reticulate"), repos = c("https://mc-stan.org/r-packages/", "https://cloud.r-project.org"))'
+
 RUN apt-get update && \
     apt-get install -y --no-install-recommends tree && \
     rm -rf /var/lib/apt/lists/*

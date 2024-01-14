@@ -31,7 +31,8 @@
 				"RDebugger.r-debugger",
 				"analytic-signal.preview-pdf",
 				"ms-vscode.live-server",
-				"github.copilot"
+				"github.copilot",
+				"eamodio.gitlens"
 			]
 		}
 	},
