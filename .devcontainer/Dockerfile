@@ -3,7 +3,7 @@
 # [Choice] Debian OS version: bullseye, buster
 # ARG VARIANT="bullseye"
 # FROM buildpack-deps:${VARIANT}-curl
-FROM jupyter/datascience-notebook:r-4.3.1
+FROM quay.io/jupyter/datascience-notebook:r-4.3.1
 
 USER root
 
