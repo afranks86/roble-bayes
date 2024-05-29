@@ -1,5 +1,5 @@
 {
-	"name": "roble-bayes",
+	"name": "bayes-analysis",
 
     "build": {
         "dockerfile": "Dockerfile",
@@ -16,7 +16,8 @@
 
     "runArgs": [
         "--user=1000:100",
-        "--userns=keep-id:uid=1000,gid=100"  // required for Podman, remove line if using Docker
+        "--userns=keep-id:uid=1000,gid=100",  // required for Podman, remove line if using Docker
+		"--security-opt=seccomp=unconfined"
     ],
 
     "forwardPorts": [8888],
@@ -52,4 +53,6 @@
 			]
 		}
 	}
+	//"remoteEnv": { "OPENBLAS_NUM_THREADS": "$(( ($( lscpu | grep 'per socket' | sed 's,.*:,,g') * $( lscpu | grep -F 'Socket(s)' | sed 's,.*:,,g')) / 10 + 1 ))" },
+
 }

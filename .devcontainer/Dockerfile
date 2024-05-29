@@ -65,3 +65,4 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends tree && \
     rm -rf /var/lib/apt/lists/*
 
+ENV OPENBLAS_NUM_THREADS=40
