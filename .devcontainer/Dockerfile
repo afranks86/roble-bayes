@@ -8,7 +8,15 @@ FROM quay.io/jupyter/datascience-notebook:r-4.3.1
 USER root
 
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends curl lmodern && \
+    apt-get install -y --no-install-recommends curl lmodern \
+    # Dependencies for RStudio
+    psmisc \
+    lsb-release \
+    libssl-dev \
+    libclang-dev \
+    libpq5 \
+    libtiff-dev \
+    && \
     rm -rf /var/lib/apt/lists/*
 
 ENV QUARTO_VERSION 1.3.450
@@ -17,6 +25,14 @@ RUN curl --silent -L --fail \
     apt-get update && \
     apt-get install -y --no-install-recommends /tmp/quarto.deb && \
     rm -rf /tmp/quarto.deb /var/lib/apt/lists/* /tmp/library-script
+
+ENV R_STUDIO_VERSION 2023.12.1-402
+RUN wget -q https://download2.rstudio.org/server/jammy/amd64/rstudio-server-${R_STUDIO_VERSION}-amd64.deb && \
+    apt-get install -yq --no-install-recommends ./rstudio*.deb && \
+    rm -f ./rstudio*.deb && \
+    apt-get clean && \
+    chmod 777 /var/run/rstudio-server && \
+    chmod +t /var/run/rstudio-server
 
 USER ${NB_USER}
 
@@ -66,3 +82,11 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 ENV OPENBLAS_NUM_THREADS=40
+
+### GitHub CLI Installation
+RUN wget https://github.com/cli/cli/releases/download/v${GITHUB_CLI_VERSION}/gh_${GITHUB_CLI_VERSION}_linux_amd64.tar.gz -O - | \
+    tar xvzf - -C /opt/conda/bin gh_${GITHUB_CLI_VERSION}_linux_amd64/bin/gh --strip-components=2
+
+### Prints Jupyter server token when terminal is opened
+RUN echo "echo \"Jupyter server token: \$(jupyter server list 2>&1 | grep -oP '(?<=token=)[[:alnum:]]*')\"" > ${HOME}/.get-jupyter-url.sh && \
+    echo "sh \${HOME}/.get-jupyter-url.sh" >> ${HOME}/.bashrc
