@@ -45,7 +45,7 @@ RUN pip install radian && \
 RUN echo "echo \"Jupyter server token: \$(jupyter server list 2>&1 | grep -oP '(?<=token=)[[:alnum:]]*')\"" > ${HOME}/.get-jupyter-url.sh && \
     echo "sh \${HOME}/.get-jupyter-url.sh" >> ${HOME}/.bashrc
 
-RUN pip install jupyterlab-quarto
+RUN pip install jupyterlab-quarto jupyter-rsession-proxy=2.2.0 \
 
 ## Install cmdstanr and INLA-R
 RUN R -q -e 'install.packages("cmdstanr", repos = c("https://mc-stan.org/r-packages/", "https://cloud.r-project.org"))' && \
@@ -86,7 +86,3 @@ ENV OPENBLAS_NUM_THREADS=40
 ### GitHub CLI Installation
 RUN wget https://github.com/cli/cli/releases/download/v${GITHUB_CLI_VERSION}/gh_${GITHUB_CLI_VERSION}_linux_amd64.tar.gz -O - | \
     tar xvzf - -C /opt/conda/bin gh_${GITHUB_CLI_VERSION}_linux_amd64/bin/gh --strip-components=2
-
-### Prints Jupyter server token when terminal is opened
-RUN echo "echo \"Jupyter server token: \$(jupyter server list 2>&1 | grep -oP '(?<=token=)[[:alnum:]]*')\"" > ${HOME}/.get-jupyter-url.sh && \
-    echo "sh \${HOME}/.get-jupyter-url.sh" >> ${HOME}/.bashrc
